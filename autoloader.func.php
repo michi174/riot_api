@@ -1,7 +1,7 @@
 <?php
 function __autoload($klasse)
 {
-    $include	= $_SERVER["DOCUMENT_ROOT"]."/riot_api/".str_replace("\\", "/", $klasse).".php";
+    $include	= $_SERVER["DOCUMENT_ROOT"]."/".str_replace("\\", "/", $klasse).".php";
 	
 	if(file_exists($include))
 	{

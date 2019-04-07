@@ -13,7 +13,7 @@
     $region = (isset($_GET["region"])) ? $_GET["region"] : "euw";
     $accountId = (isset($_GET["accountId"])) ? $_GET["accountId"] : "";
 
-    $api_url = "http://".$_SERVER['HTTP_HOST']."/riot_api/";
+    $api_url = "http://".$_SERVER['HTTP_HOST']."/";
 
     if(isset($_GET["m"]))
     {
