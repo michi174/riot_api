@@ -379,6 +379,7 @@ class RiotAPI
         $this->apis['summoners'] = "Summoners";
         $this->apis['matches'] = "Matches";
         $this->apis['positions'] = "Positions";
+        $this->apis['entries'] = "Entries";
     }
 }
 ?>
