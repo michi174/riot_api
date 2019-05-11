@@ -380,6 +380,7 @@ class RiotAPI
         $this->apis['matches'] = "Matches";
         $this->apis['positions'] = "Positions";
         $this->apis['entries'] = "Entries";
+        $this->apis['timelines'] = "Timelines";
     }
 }
 ?>
