@@ -1,7 +1,7 @@
 <?php
 namespace RiotApi;
 
-class Positions extends baseAPI
+class Entries extends baseAPI
 {
     
     protected $API_NAMESPACE = "league";

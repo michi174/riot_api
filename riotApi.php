@@ -6,6 +6,7 @@ require_once 'autoloader.func.php';
 class RiotAPI
 {
     //summoner: pE1cLS-RDFQAhH4Bkd8eOSXfjFF2Q61d-NE_xqIisxD3KeA;
+    //puuid: N2ZYmZa7JF2oXnRUk3kFKYXPKYkqSTDngGegSgrG1GMz2iArBFbBUg8oZ54J-VMFHAQvuO98Rxt9aw
     
     /*
      * Your API Key here;
@@ -22,7 +23,7 @@ class RiotAPI
     const DD_URL = "ddragon.leagueoflegends.com";
     
     private $regionEndpoints = Array();
-    private $region = array("region" => "euw", "platform" => "euw1");
+    private $region = array("region" => "euw", "platform" => "euw1", "routing" => "europe");
     private $language = "de_DE";
     private $requestResults;
     private $outputFormat = self::OUTPUT_TYPE_JSON;
@@ -109,8 +110,10 @@ class RiotAPI
                 $new = $namespace ."\\".$class;
                 
                 $object= new $new($this);
+
+
                 
-                return $object->getApiUrl()."?api_key=".self::API_KEY;
+                return $object->getApiUrl();
             }
             else
             {
@@ -132,6 +135,13 @@ class RiotAPI
     {
         
     }
+
+    public function log($text){
+        $file = 'requests.log';
+        $datetime = new \DateTime();
+        $_text = date("Y-m-d H:i:s")." - $text";
+        file_put_contents($file, $_text, FILE_APPEND | LOCK_EX);
+    }
     
 
 
@@ -144,6 +154,8 @@ class RiotAPI
             array_push($temp_url, $urls);
             $urls = $temp_url;
         }
+
+        //echo(var_dump($urls));
         
         $curl_handles = Array();
         $results = Array();
@@ -151,6 +163,8 @@ class RiotAPI
         $is_busy = null;
         
         $multi_curl_handle = curl_multi_init();
+
+        //var_dump($multi_curl_handle);
         
         //Curl handles erzeugen
         foreach($urls as $id => $url)
@@ -159,6 +173,9 @@ class RiotAPI
             curl_setopt($curl_handles[$id], CURLOPT_URL, $urls[$id]);
             curl_setopt($curl_handles[$id], CURLOPT_RETURNTRANSFER, true);
             //curl_setopt($curl_handles[$id], CURLOPT_HEADER, true);
+            curl_setopt($curl_handles[$id], CURLOPT_HTTPHEADER, array(
+                "X-Riot-Token:".self::API_KEY
+            ));
             
             
             curl_multi_add_handle($multi_curl_handle, $curl_handles[$id]);
@@ -167,12 +184,17 @@ class RiotAPI
             {
                 break;
             }
+            //echo "log\n";
+            //var_dump($multi_curl_handle);      
             
+            $this->log("request against: $url\n ");
         }
         do
         {
             
             $exec_response = curl_multi_exec($multi_curl_handle, $is_busy);
+            //var_dump($multi_curl_handle);
+            //echo "do\n";
             
         } while($is_busy > 0);
         
@@ -184,8 +206,16 @@ class RiotAPI
         
         foreach($curl_handles as $id => $handle)
         {
+            
             $status_code = curl_getinfo($handle, CURLINFO_RESPONSE_CODE);
             http_response_code($status_code);
+
+            $this->log($status_code."\n");
+            $this->log(var_export(\curl_getinfo($handle), true));
+
+            //var_dump($status_code."\n");
+
+            //echo $status_code;
 
             switch ($status_code)
             {
@@ -227,14 +257,15 @@ class RiotAPI
         
     }
     
-    protected function singleRequest($url)
+    public function singleRequest($url)
     {
+        $this->log("single request against: $url\n ");
         $handle = curl_init($url);
         
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($handle);
         $status_code = curl_getinfo($handle, CURLINFO_RESPONSE_CODE);    
-        
+        $this->log($status_code."\n");
         $return = array("body" => $result, "status" => $status_code);
         
         return $return;
@@ -263,6 +294,7 @@ class RiotAPI
     
     public function getResult($urls)
     {
+        //var_dump($urls);
         $this->request($urls);
         
         return $this->requestResults;
@@ -359,17 +391,17 @@ class RiotAPI
     
     private function setRegionEndpoints()
     {
-        $this->regionEndpoints["br"] = array("region" => "br", "platform" => "br1");
-        $this->regionEndpoints["eune"] = array("region" => "eune", "platform" => "eun1");
-        $this->regionEndpoints["euw"] = array("region" => "euw", "platform" => "euw1");
-        $this->regionEndpoints["jp"] = array("region" => "jp", "platform" => "jp1");
-        $this->regionEndpoints["kr"] = array("region" => "kr", "platform" => "kr");
-        $this->regionEndpoints["lan"] = array("region" => "lan", "platform" => "la1");
-        $this->regionEndpoints["las"] = array("region" => "las", "platform" => "la2");
-        $this->regionEndpoints["na"] = array("region" => "na", "platform" => "na1");
-        $this->regionEndpoints["oce"] = array("oce" => "eune", "platform" => "oc1");
-        $this->regionEndpoints["tr"] = array("region" => "tr", "platform" => "tr1");
-        $this->regionEndpoints["ru"] = array("region" => "ru", "platform" => "ru");
+        $this->regionEndpoints["br"] = array("region" => "br", "platform" => "br1", "routing" => "americas");
+        $this->regionEndpoints["eune"] = array("region" => "eune", "platform" => "eun1", "routing" => "europe");
+        $this->regionEndpoints["euw"] = array("region" => "euw", "platform" => "euw1", "routing" => "europe");
+        $this->regionEndpoints["jp"] = array("region" => "jp", "platform" => "jp1", "routing" => "asia");
+        $this->regionEndpoints["kr"] = array("region" => "kr", "platform" => "kr", "routing" => "asia");
+        $this->regionEndpoints["lan"] = array("region" => "lan", "platform" => "la1", "routing" => "americas");
+        $this->regionEndpoints["las"] = array("region" => "las", "platform" => "la2", "routing" => "americas");
+        $this->regionEndpoints["na"] = array("region" => "na", "platform" => "na1", "routing" => "americas");
+        $this->regionEndpoints["oce"] = array("oce" => "eune", "platform" => "oc1", "routing" => "americas");
+        $this->regionEndpoints["tr"] = array("region" => "tr", "platform" => "tr1", "routing" => "europe");
+        $this->regionEndpoints["ru"] = array("region" => "ru", "platform" => "ru", "routing" => "europe");
         $this->regionEndpoints["pbe"] = array("region" => "pbe", "platform" => "pbe1");        
     }
     
@@ -379,6 +411,8 @@ class RiotAPI
         $this->apis['summoners'] = "Summoners";
         $this->apis['matches'] = "Matches";
         $this->apis['positions'] = "Positions";
+        $this->apis['entries'] = "Entries";
+        $this->apis['timelines'] = "Timelines";
     }
 }
 ?>

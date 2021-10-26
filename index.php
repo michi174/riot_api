@@ -15,6 +15,8 @@ $api = new RiotAPI($queryString);
 $url = $api->execute();
 
 //echo $url;
+
+//die($url);
 echo $api->getJSONFromURL($url);
 
 ?>

@@ -1,15 +1,15 @@
 <?php
 namespace RiotApi;
 
-class Positions extends baseAPI
+class Timelines extends baseAPI
 {
     
-    protected $API_NAMESPACE = "league";
+    protected $API_NAMESPACE = "match";
     
     protected $methods = array(
-        "by-summoner" => array(
-            "name" => "by-summoner",
-            "queryname" => "summoner-id"
+        "by-match" => array(
+            "name" => "by-match",
+            "queryname" => "matchId"
         )
     );
 
@@ -22,12 +22,14 @@ class Positions extends baseAPI
     {
         if(isset($this->method))
         {
-            return "https://".$this->region["platform"]
+            $url= "https://".$this->region["platform"]
             .".".$this->apiUrl."/".$this->API_NAMESPACE
             ."/".$this->apiVersion
             ."/".strtolower(substr(strrchr(__CLASS__, "\\"), 1))
             ."/".$this->methods[$this->method]["name"]
             ."/".$this->getQueryNameString();
+
+            return $url;
         }
         else
         {

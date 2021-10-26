@@ -21,10 +21,11 @@
         {
             $matches[$id] = ['gameId' => $gameId];
         }
+        //var_dump($matches);
     }
     else
     {
-        $matches = json_decode($api->getJSONFromURL($api_url."index.php?api=matchlists&method=by-account&account=".$accountId."&region=".$region), true)["matches"];
+        $matches = json_decode($api->getJSONFromURL($api_url."index.php?api=matches&method=by-puuid&puuid=".$accountId), true)["matches"];
     }
 
     
@@ -57,6 +58,7 @@
 
     $urls = Array();
 
+    
 
     foreach($matches as $id => $match_data)
     {
@@ -65,12 +67,18 @@
             break;
         }
 
-        $urls[$id] = $api_url."index.php?api=matches&matchid=".$match_data["gameId"]."&region=".$region;
+        $urls[$id] = $api_url."index.php?api=matches&method=match&matchid=".$match_data["gameId"];
+
     }
+
+    
     
     
     $matches_new = $api->getResult($urls);
-    
+
+    //$matches_new = $api->singleRequest($urls[0]);
+
+    //var_dump($matches_new);
     
 
     foreach($matches as $matchid => $match_data)

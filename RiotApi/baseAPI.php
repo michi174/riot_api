@@ -60,10 +60,10 @@ abstract class baseAPI implements IRiotApis
     {
         if(isset($this->params[$this->methods[$this->method]["queryname"]]))
             return $this->params[$this->methods[$this->method]["queryname"]];
-            else
-            {
-                return "";
-            }
+        else
+        {
+            return "";
+        }
     }
     
     public function getApiUrl() : string

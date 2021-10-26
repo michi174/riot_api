@@ -1,15 +1,14 @@
 <?php
 namespace RiotApi;
 
-class Positions extends baseAPI
+class Matches extends baseAPI
 {
-    
-    protected $API_NAMESPACE = "league";
+    protected $API_NAMESPACE = "match";
     
     protected $methods = array(
-        "by-summoner" => array(
-            "name" => "by-summoner",
-            "queryname" => "summoner-id"
+        "" => array(
+            "name" => "",
+            "queryname" => "matchid"
         )
     );
 
@@ -18,7 +17,7 @@ class Positions extends baseAPI
         parent::__construct($api);
     }
 
-    protected function buildApiUrl() :string
+    protected function buildApiUrl():string
     {
         if(isset($this->method))
         {
@@ -26,7 +25,7 @@ class Positions extends baseAPI
             .".".$this->apiUrl."/".$this->API_NAMESPACE
             ."/".$this->apiVersion
             ."/".strtolower(substr(strrchr(__CLASS__, "\\"), 1))
-            ."/".$this->methods[$this->method]["name"]
+            .$this->not2SeperatorHelper("", $this->method).$this->methods[$this->method]["name"]
             ."/".$this->getQueryNameString();
         }
         else
@@ -35,4 +34,4 @@ class Positions extends baseAPI
         }
     }
 }
-?>
+
