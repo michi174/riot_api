@@ -71,13 +71,12 @@
 
     }
 
-    
+
     
     
     $matches_new = $api->getResult($urls);
 
     //$matches_new = $api->singleRequest($urls[0]);
-
     //var_dump($matches_new);
     
 
@@ -95,43 +94,53 @@
 
         if(is_array($match_detailed_data))
         {
-            $players = $match_detailed_data["participantIdentities"];
-            $players_match_data = $match_detailed_data["participants"];
+            $players = $match_detailed_data["info"]["participants"];
+            $players_match_data = $match_detailed_data["info"]["participants"];
             $searched_playerId = null;
             $partId = null;
 
-            foreach($players as $playerId => $playerData)
+            /*foreach($players as $playerId => $playerData)
             {
                 $searched_playerId = $playerId;
                 $partId = $playerData["participantId"];
 
-                if($playerData["player"]["accountId"] == $accountId)
+                if($playerData == $accountId)
                 {
+                    break;
+                }
+            }*/
+
+            foreach($players as $playerId => $playerData){
+                if($playerData["puuid"] == $accountId){
+                    $searched_playerId = $playerId;
+                    $partId = $playerData["participantId"];
+
                     break;
                 }
             }
 
 
-            $win = $players_match_data[$searched_playerId]["stats"]["win"];
-            $kills = $players_match_data[$searched_playerId]["stats"]["kills"];
-            $deaths = $players_match_data[$searched_playerId]["stats"]["deaths"];
-            $assists = $players_match_data[$searched_playerId]["stats"]["assists"];
-            $gold = $players_match_data[$searched_playerId]["stats"]["goldEarned"];
-            $minions = ($players_match_data[$searched_playerId]["stats"]["totalMinionsKilled"]+$players_match_data[$searched_playerId]["stats"]["neutralMinionsKilled"]);
-            $level  = $players_match_data[$searched_playerId]["stats"]["champLevel"];
-            $sumspell1  = $players_match_data[$searched_playerId]["spell1Id"];
-            $sumspell2  = $players_match_data[$searched_playerId]["spell2Id"];
-            $perkPrimary = $players_match_data[$searched_playerId]["stats"]["perk0"];
-            $perkSecondary = $players_match_data[$searched_playerId]["stats"]["perkSubStyle"];
-            $duration = $match_detailed_data["gameDuration"];
+
+            $win = $players_match_data[$searched_playerId]["win"];
+            $kills = $players_match_data[$searched_playerId]["kills"];
+            $deaths = $players_match_data[$searched_playerId]["deaths"];
+            $assists = $players_match_data[$searched_playerId]["assists"];
+            $gold = $players_match_data[$searched_playerId]["goldEarned"];
+            $minions = ($players_match_data[$searched_playerId]["totalMinionsKilled"]+$players_match_data[$searched_playerId]["stats"]["neutralMinionsKilled"]);
+            $level  = $players_match_data[$searched_playerId]["champLevel"];
+            $sumspell1  = $players_match_data[$searched_playerId]["summoner1Id"];
+            $sumspell2  = $players_match_data[$searched_playerId]["summoner2Id"];
+            $perkPrimary = $players_match_data[$searched_playerId]["perks"]["styles"][0]["style"];
+            $perkSecondary = $players_match_data[$searched_playerId]["perks"]["styles"][1]["style"];
+            $duration = $match_detailed_data["metadata"]["gameDuration"];
             $teamId = $players_match_data[$searched_playerId]["teamId"];
-            $item0 = $players_match_data[$searched_playerId]["stats"]["item0"];
-            $item1 = $players_match_data[$searched_playerId]["stats"]["item1"];
-            $item2 = $players_match_data[$searched_playerId]["stats"]["item2"];
-            $item3 = $players_match_data[$searched_playerId]["stats"]["item3"];
-            $item4 = $players_match_data[$searched_playerId]["stats"]["item4"];
-            $item5 = $players_match_data[$searched_playerId]["stats"]["item5"];
-            $item6 = $players_match_data[$searched_playerId]["stats"]["item6"];
+            $item0 = $players_match_data[$searched_playerId]["item0"];
+            $item1 = $players_match_data[$searched_playerId]["item1"];
+            $item2 = $players_match_data[$searched_playerId]["item2"];
+            $item3 = $players_match_data[$searched_playerId]["item3"];
+            $item4 = $players_match_data[$searched_playerId]["item4"];
+            $item5 = $players_match_data[$searched_playerId]["item5"];
+            $item6 = $players_match_data[$searched_playerId]["item6"];
             $champion = $players_match_data[$searched_playerId]["championId"];
             
 

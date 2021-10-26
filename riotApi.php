@@ -140,7 +140,7 @@ class RiotAPI
         $file = 'requests.log';
         $datetime = new \DateTime();
         $_text = date("Y-m-d H:i:s")." - $text";
-        file_put_contents($file, $_text, FILE_APPEND | LOCK_EX);
+        //file_put_contents($file, $_text, FILE_APPEND | LOCK_EX);
     }
     
 
