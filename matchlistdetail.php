@@ -146,7 +146,7 @@
 
             $teamkills = 0;
 
-            foreach($match_detailed_data as $participant => $participant_data)
+            foreach($players as $participant => $participant_data)
             {
                 if($participant_data["teamId"] == $teamId)
                 {
