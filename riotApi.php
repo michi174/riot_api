@@ -19,7 +19,7 @@ class RiotAPI
     const OUTPUT_TYPE_ECHO = "ECHO";
     const OUTPUT_TYPE_ARRAY = "ARRAY";
     const API_VERSION = "v4";
-    const API_URL = "api.riotgames.com/lol";
+    const API_URL = 'api.riotgames.com/lol';
     const DD_URL = "ddragon.leagueoflegends.com";
     
     private $regionEndpoints = Array();
