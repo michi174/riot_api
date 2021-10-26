@@ -132,7 +132,7 @@
             $sumspell2  = $players_match_data[$searched_playerId]["summoner2Id"];
             $perkPrimary = $players_match_data[$searched_playerId]["perks"]["styles"][0]["style"];
             $perkSecondary = $players_match_data[$searched_playerId]["perks"]["styles"][1]["style"];
-            $duration = $match_detailed_data["metadata"]["gameDuration"];
+            $duration = $match_detailed_data["info"]["gameDuration"];
             $teamId = $players_match_data[$searched_playerId]["teamId"];
             $item0 = $players_match_data[$searched_playerId]["item0"];
             $item1 = $players_match_data[$searched_playerId]["item1"];
@@ -146,11 +146,11 @@
 
             $teamkills = 0;
 
-            foreach($match_detailed_data["participants"] as $participant => $participant_data)
+            foreach($match_detailed_data as $participant => $participant_data)
             {
                 if($participant_data["teamId"] == $teamId)
                 {
-                    $teamkills += $participant_data["stats"]["kills"];
+                    $teamkills += $participant_data["kills"];
                 }
             }
             $killParticipation = ($teamkills > 0) ? round(($kills+$assists) * 100 / $teamkills) : 0;
@@ -181,6 +181,7 @@
             $detailed_matches[$matchid]["partId"] = $partId;
             $detailed_matches[$matchid]["champion"] = $champion;
             $detailed_matches[$matchid]["accountId"] = $accountId;
+            $detailed_matches[$matchid]["teamId"] = $teamId;
         }
         
         if($matchid === count($matches_new)-1)
