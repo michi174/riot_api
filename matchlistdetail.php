@@ -7,7 +7,7 @@
 
     const MAX_MATCHES = 10;
     
-    $api = new RiotApi\RiotAPI();  
+    $api = new RiotApi\RiotAPI($_SERVER['QUERY_STRING']);
 
 
     $region = (isset($_GET["region"])) ? $_GET["region"] : "euw";
@@ -25,7 +25,7 @@
     }
     else
     {
-        $matches = json_decode($api->getJSONFromURL($api_url."index.php?api=matches&method=by-puuid&puuid=".$accountId), true)["matches"];
+        $matches = json_decode($api->getJSONFromURL($api_url."index.php?api=matches&method=by-puuid&puuid=".$accountId."&region=".$region), true)["matches"];
     }
 
     
@@ -67,7 +67,7 @@
             break;
         }
 
-        $urls[$id] = $api_url."index.php?api=matches&method=match&matchid=".$match_data["gameId"];
+        $urls[$id] = $api_url."index.php?api=matches&method=match&matchid=".$match_data["gameId"]."&region=".$region;
 
     }
 
