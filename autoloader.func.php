@@ -1,5 +1,5 @@
 <?php
-function __autoload($klasse)
+function autoload($klasse)
 {
 	$include	= $_SERVER["DOCUMENT_ROOT"] . "/" . str_replace("\\", "/", $klasse) . ".php";
 
@@ -9,3 +9,5 @@ function __autoload($klasse)
 		die("Fehler: Die Datei " . $include . " konnte nicht eingebunden werden, da die Datei nicht gefunden wurde.");
 	}
 }
+
+spl_autoload_register('autoload');
