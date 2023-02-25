@@ -1,4 +1,5 @@
 <?php
+
 use RiotApi\RiotAPI;
 
 header("Access-Control-Allow-Origin: *");
@@ -18,5 +19,3 @@ $url = $api->execute();
 
 //die($url);
 echo $api->getJSONFromURL($url);
-
-?>

@@ -13,6 +13,3 @@ $queryString = $_SERVER['QUERY_STRING'];
 $api = new RiotAPI();
 $api->setOptions($queryString);
 echo $api->getStaticData();
-
-
-?>
